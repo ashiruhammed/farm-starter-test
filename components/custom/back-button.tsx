@@ -1,17 +1,24 @@
 import { router } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
-import { Text } from '~/components/ui/text';
 
-const BackButton = () => {
+import { Text } from '../ui/text';
+import { ArrowLeft } from 'lucide-react-native';
+
+const BackButton = ({ title }: { title?: string }) => {
+  if (!router.canGoBack()) {
+    return null;
+  }
+
   return (
-    <TouchableOpacity
-      onPress={() => router.back()}
-      className="flex-row items-center">
-      <Text variant="medium" className="text-farm-600 text-lg">
-        ← Back
-      </Text>
+    <TouchableOpacity hitSlop={20} className="flex-row items-center" onPress={() => router.back()}>
+<ArrowLeft  />
+      {title && (
+        <Text variant="medium" className="-ml-4 flex-1 text-center text-base">
+          {title}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 };
 
-export default BackButton; 
+export default BackButton;
