@@ -8,19 +8,20 @@ const WelcomeScreen = () => {
   return (
     <AppSafeAreaView>
       <View className="mt-24 flex-1 items-center">
-      
-        <Text className="text-farm-600 mb-2 mt-6 text-2xl" variant="semiBold">
+        <Text className="mb-2 mt-6 text-2xl text-farm-600" variant="semiBold">
           FarmStarter
         </Text>
-   
-        <Text className="mt-4 max-w-[320px] text-gray-700 text-center text-lg leading-6">
-          Your online marketplace for fresh farm products. Shop, browse, and order directly from local farmers.
+
+        <Text className="mt-4 max-w-[320px] text-center text-lg leading-6 text-gray-700">
+          Your online marketplace for fresh farm products. Shop, browse, and order directly from
+          local farmers.
         </Text>
-        
-        <Text className="mt-6 max-w-[300px] text-gray-500 text-center text-sm">
-          Discover quality products, add to cart, and enjoy seamless shopping experience with secure checkout.
+
+        <Text className="mt-6 max-w-[300px] text-center text-sm text-gray-500">
+          Discover quality products, add to cart, and enjoy seamless shopping experience with secure
+          checkout.
         </Text>
-        
+
         <View className="mb-4 mt-auto w-full gap-3 px-4">
           <Button
             onPress={() => {

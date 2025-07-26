@@ -6,12 +6,12 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { Appearance, Platform } from 'react-native';
+import { Appearance, Platform, View, ActivityIndicator } from 'react-native';
 import { ThemeToggle } from '~/components/ThemeToggle';
 import { setAndroidNavigationBar } from '~/lib/android-navigation-bar';
 import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/useColorScheme';
-import { AuthProvider } from '../context/AuthContext';
+import { AuthProvider, useAuth } from '../context/AuthContext';
 import { CartProvider } from '../context/CartContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
@@ -25,6 +25,7 @@ import {
 } from '@expo-google-fonts/bricolage-grotesque';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Text } from '~/components/ui/text';
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -35,16 +36,37 @@ const DARK_THEME: Theme = {
   colors: NAV_THEME.dark,
 };
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
+export { ErrorBoundary } from 'expo-router';
 
 const usePlatformSpecificSetup = Platform.select({
   web: useSetWebBackgroundClassName,
   android: useSetAndroidNavigationBar,
   default: noop,
 });
+
+function RootLayoutNav() {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <View className="flex-1 items-center justify-center bg-white">
+        <ActivityIndicator size="large" color="#16a34a" />
+        <Text className="mt-4 text-gray-600">Loading FarmStarter...</Text>
+      </View>
+    );
+  }
+
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Protected guard={!user}>
+        <Stack.Screen name="(auth)" />
+      </Stack.Protected>
+      <Stack.Protected guard={!!user}>
+        <Stack.Screen name="(guarded)" />
+      </Stack.Protected>
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   usePlatformSpecificSetup();
@@ -78,16 +100,7 @@ export default function RootLayout() {
             <CartProvider>
               <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
                 <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-                <Stack screenOptions={{ headerShown: false }}>
-                  <Stack.Screen name="(auth)" />
-                  {/* <Stack.Screen
-              name='(guarded)'
-              options={{
-                title: 'Starter Base',
-                headerRight: () => <ThemeToggle />,
-              }}
-            /> */}
-                </Stack>
+                <RootLayoutNav />
                 <PortalHost />
               </ThemeProvider>
             </CartProvider>
