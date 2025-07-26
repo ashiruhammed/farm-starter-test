@@ -140,7 +140,7 @@ export default function HomeScreen() {
       </View>
 
       <View className="mx-4 mb-4">
-        <View className="flex-row items-center rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
+        <View className="flex-row items-center rounded-2xl border border-gray-200 bg-white px-4 py-3">
           <Search size={20} color="#6b7280" />
           <TextInput
             value={searchQuery}
@@ -148,6 +148,9 @@ export default function HomeScreen() {
             placeholder="Search products..."
             className="ml-3 flex-1 text-base text-gray-900"
             placeholderTextColor="#9ca3af"
+            style={{
+              fontFamily: 'BricolageGrotesque_500Medium',
+            }}
           />
           {searchQuery.length > 0 && (
             <TouchableOpacity onPress={clearSearch} className="ml-2">
