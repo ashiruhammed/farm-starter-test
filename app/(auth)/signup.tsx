@@ -1,85 +1,136 @@
 import React, { useState } from 'react';
-import { Alert, View } from 'react-native';
-import { useRouter } from 'expo-router';
-import { Container } from '~/components/Container';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
+import { router } from 'expo-router';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { KeyboardAvoidingView, ScrollView, TouchableOpacity, View } from 'react-native';
+import AppSafeAreaView from '~/components/custom/app-safe-area';
+import BackButton from '~/components/custom/back-button';
 import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
 import { Text } from '~/components/ui/text';
 import { useAuth } from '~/context/AuthContext';
-import { FormField } from '~/components/ui/form-field';
-import { User, Lock } from 'lucide-react-native';
+import { signupSchema, type SignupFormData } from '~/lib/schemas/auth.schema';
 
-export default function SignupScreen() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const SignupScreen = () => {
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<{ username?: string; password?: string } | null>(null);
+  const [authError, setAuthError] = useState('');
   const { signup } = useAuth();
-  const router = useRouter();
 
-  const validate = () => {
-    const errs: { username?: string; password?: string } = {};
-    if (!username) errs.username = 'Username is required';
-    if (!password) errs.password = 'Password is required';
-    else if (password.length < 6) errs.password = 'Password must be at least 6 characters';
-    return errs;
-  };
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<SignupFormData>({
+    resolver: zodResolver(signupSchema),
+    mode: 'onChange',
+  });
 
-  const handleSignup = async () => {
-    const errs = validate();
-    setErrors(errs);
-    if (Object.keys(errs).length > 0) return;
+  const onSubmit = async (data: SignupFormData) => {
     setLoading(true);
-    const success = await signup(username, password);
+    setAuthError('');
+
+    const success = await signup(data.username, data.password);
     setLoading(false);
+
     if (success) {
-      Alert.alert('Success', 'Account created!');
-      router.replace('/');
+      router.replace('/(guarded)');
     } else {
-      setErrors({ username: 'Username already taken or error occurred' });
+      setAuthError('Username already taken or error occurred');
     }
   };
 
   return (
-    <Container>
-      <View className="flex-1 justify-center items-center">
-        <Card className="w-full max-w-md p-6 bg-white/90 shadow-lg rounded-2xl">
-          <CardHeader className="items-center mb-2">
-            <CardTitle className="text-3xl font-bold mb-2">Create Account</CardTitle>
-            <Text className="text-muted-foreground mb-4">Sign up to get started</Text>
-          </CardHeader>
-          <CardContent>
-            <FormField
-              label="Username"
-              value={username}
-              onChangeText={setUsername}
-              placeholder="Choose a username"
-              error={errors?.username}
-            />
-            <FormField
-              label="Password"
-              value={password}
-              onChangeText={setPassword}
-              placeholder="Create a password"
-              secureTextEntry
-              error={errors?.password}
-            />
-          </CardContent>
-          <CardFooter className="flex-col gap-4">
-            <Button onPress={handleSignup} disabled={loading} className="w-full bg-indigo-500">
-              <Text className="text-white text-lg font-semibold">
-                {loading ? 'Signing up...' : 'Sign Up'}
-              </Text>
-            </Button>
-            <Text className="mt-2 text-center text-base">
-              Already have an account?{' '}
-              <Text className="text-indigo-600 font-semibold" onPress={() => router.push('/login')}>
-                Login
-              </Text>
+    <AppSafeAreaView className="mt-4 px-4">
+      <KeyboardAvoidingView behavior="padding" className="flex-1">
+        <ScrollView className="flex-1">
+          <BackButton />
+          <Text variant="bold" className="mt-4 text-3xl">
+            Create Account
+          </Text>
+          <Text className="mt-2 max-w-[300px] text-sm text-gray-500">
+            Join FarmStarter and start shopping for fresh farm products
+          </Text>
+
+          <View className="gap-4">
+            <View>
+              <Controller
+                control={control}
+                name="username"
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    className="mt-6 rounded-full px-4 font-medium"
+                    placeholder="Choose a username"
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
+              />
+              {errors.username && (
+                <Text className="mt-1 text-sm text-red-500">{errors.username.message}</Text>
+              )}
+            </View>
+            <View>
+              <Controller
+                control={control}
+                name="password"
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    className="rounded-full px-4 font-medium"
+                    placeholder="Create a password"
+                    value={value}
+                    isPassword
+                    onChangeText={onChange}
+                  />
+                )}
+              />
+              {errors.password && (
+                <Text className="mt-1 text-sm text-red-500">{errors.password.message}</Text>
+              )}
+            </View>
+            <View>
+              <Controller
+                control={control}
+                name="confirmPassword"
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    className="rounded-full px-4 font-medium"
+                    placeholder="Confirm password"
+                    value={value}
+                    onChangeText={onChange}
+                    isPassword
+                  />
+                )}
+              />
+              {errors.confirmPassword && (
+                <Text className="mt-1 text-sm text-red-500">{errors.confirmPassword.message}</Text>
+              )}
+            </View>
+
+            {authError ? <Text className="mt-2 text-sm text-red-500">{authError}</Text> : null}
+          </View>
+        </ScrollView>
+
+        <View className="mt-auto">
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            disabled={!isValid || loading}
+            className={`rounded-full ${
+              isValid && !loading ? 'bg-farm-600' : 'border border-gray-200 bg-gray-50'
+            }`}>
+            <Text variant="medium" className={isValid && !loading ? 'text-white' : 'text-gray-400'}>
+              {loading ? 'Creating account...' : 'Create account'}
             </Text>
-          </CardFooter>
-        </Card>
-      </View>
-    </Container>
+          </Button>
+          <Text className="mt-4 text-center text-sm text-gray-500">
+            Already have an account?{' '}
+            <Text variant="bold" className="text-farm-600" onPress={() => router.push('/login')}>
+              Login
+            </Text>
+          </Text>
+        </View>
+      </KeyboardAvoidingView>
+    </AppSafeAreaView>
   );
-} 
+};
+
+export default SignupScreen;

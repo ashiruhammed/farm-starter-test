@@ -13,7 +13,7 @@ import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { AuthProvider } from '../context/AuthContext';
 import { CartProvider } from '../context/CartContext';
-
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   BricolageGrotesque_200ExtraLight,
   BricolageGrotesque_300Light,
@@ -23,6 +23,8 @@ import {
   BricolageGrotesque_700Bold,
   BricolageGrotesque_800ExtraBold,
 } from '@expo-google-fonts/bricolage-grotesque';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -35,7 +37,7 @@ const DARK_THEME: Theme = {
 
 export {
   // Catch any errors thrown by the Layout component.
-  ErrorBoundary
+  ErrorBoundary,
 } from 'expo-router';
 
 const usePlatformSpecificSetup = Platform.select({
@@ -69,28 +71,30 @@ export default function RootLayout() {
   }
 
   return (
-
-    <AuthProvider>
-      <CartProvider>
-        <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-          <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-          <Stack screenOptions={{ headerShown: false }} >
-            <Stack.Screen
-              name='(auth)'
-   
-            />
-            {/* <Stack.Screen
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <KeyboardProvider>
+          <AuthProvider>
+            <CartProvider>
+              <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+                <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+                <Stack screenOptions={{ headerShown: false }}>
+                  <Stack.Screen name="(auth)" />
+                  {/* <Stack.Screen
               name='(guarded)'
               options={{
                 title: 'Starter Base',
                 headerRight: () => <ThemeToggle />,
               }}
             /> */}
-          </Stack>
-          <PortalHost />
-        </ThemeProvider>
-      </CartProvider>
-    </AuthProvider>
+                </Stack>
+                <PortalHost />
+              </ThemeProvider>
+            </CartProvider>
+          </AuthProvider>
+        </KeyboardProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 
