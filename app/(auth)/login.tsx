@@ -108,7 +108,10 @@ const LoginScreen = () => {
           </Button>
           <Text className="mt-4 text-center text-sm text-gray-500">
             Don't have an account?{' '}
-            <Text variant="bold" className="text-farm-600" onPress={() => router.push('/signup')}>
+            <Text
+              variant="bold"
+              className="text-farm-600"
+              onPress={() => router.replace('/signup')}>
               Sign up
             </Text>
           </Text>
