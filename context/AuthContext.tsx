@@ -32,13 +32,23 @@ async function writeUsers(users: User[]) {
   await FileSystem.writeAsStringAsync(USERS_FILE, JSON.stringify(users, null, 2));
 }
 
+async function readAllUsers(): Promise<User[]> {
+  try {
+    await ensureUsersFile();
+    const data = await FileSystem.readAsStringAsync(USERS_FILE);
+    return JSON.parse(data);
+  } catch (e) {
+    
+    return usersData as User[];
+  }
+}
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
   const login = async (username: string, password: string) => {
     try {
-      // Use direct import for reading users
-      const users: User[] = usersData as User[];
+      const users = await readAllUsers();
       const found = users.find(u => u.username === username && u.password === password);
       if (found) {
         setUser(found);
@@ -53,11 +63,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signup = async (username: string, password: string) => {
     try {
-      await ensureUsersFile();
-      const data = await FileSystem.readAsStringAsync(USERS_FILE);
-      const users: User[] = JSON.parse(data);
+      const users = await readAllUsers();
       if (users.find(u => u.username === username)) {
-        return false; // Username taken
+        return false; 
       }
       const newUser = { id: Date.now(), username, password };
       const updated = [...users, newUser];
