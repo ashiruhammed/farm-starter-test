@@ -3,6 +3,8 @@ import React from 'react';
 import HomeIcon from '~/components/icon/home';
 import CartIcon from '~/components/icon/cart';
 import SettingsIcon from '~/components/icon/settings';
+import { Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const GuardedLayout = () => {
   return (
@@ -18,7 +20,9 @@ const GuardedLayout = () => {
           borderTopColor: '#e5e7eb',
           paddingBottom: 5,
           paddingTop: 5,
+          height: Platform.OS === 'android' ? 64 : 65 + useSafeAreaInsets().bottom,
         },
+        tabBarItemStyle: { marginTop: 10 },
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: '500',

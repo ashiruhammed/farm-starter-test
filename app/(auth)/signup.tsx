@@ -40,7 +40,7 @@ const SignupScreen = () => {
   };
 
   return (
-    <AppSafeAreaView className="mt-4 px-4">
+    <AppSafeAreaView className="px-4 py-4">
       <KeyboardAvoidingView behavior="padding" className="flex-1">
         <ScrollView className="flex-1">
           <BackButton />

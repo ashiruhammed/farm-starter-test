@@ -98,11 +98,9 @@ export default function RootLayout() {
         <KeyboardProvider>
           <AuthProvider>
             <CartProvider>
-              <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-                <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-                <RootLayoutNav />
-                <PortalHost />
-              </ThemeProvider>
+              <StatusBar />
+              <RootLayoutNav />
+              <PortalHost />
             </CartProvider>
           </AuthProvider>
         </KeyboardProvider>

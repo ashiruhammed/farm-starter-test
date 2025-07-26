@@ -275,9 +275,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **React Native Community**: For the excellent ecosystem
 - **NativeWind Team**: For the utility-first styling solution
 - **Lucide Team**: For the beautiful icon library
-
----
-
-**Made with ❤️ for fresh farm products everywhere**
-
-For support or questions, please open an issue on GitHub or contact us at support@farmstarter.com
