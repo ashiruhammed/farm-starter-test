@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import * as FileSystem from 'expo-file-system';
 import { Alert } from 'react-native';
+import usersData from '~/assets/data/users.json';
 
 interface User {
   id: number;
@@ -23,15 +24,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 async function ensureUsersFile() {
   const exists = await FileSystem.getInfoAsync(USERS_FILE);
   if (!exists.exists) {
-    // Copy from asset to document directory on first run
     await FileSystem.copyAsync({ from: ASSET_USERS_FILE, to: USERS_FILE });
   }
-}
-
-async function readUsers(): Promise<User[]> {
-  await ensureUsersFile();
-  const data = await FileSystem.readAsStringAsync(USERS_FILE);
-  return JSON.parse(data);
 }
 
 async function writeUsers(users: User[]) {
@@ -43,7 +37,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (username: string, password: string) => {
     try {
-      const users = await readUsers();
+      // Use direct import for reading users
+      const users: User[] = usersData as User[];
       const found = users.find(u => u.username === username && u.password === password);
       if (found) {
         setUser(found);
@@ -58,7 +53,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signup = async (username: string, password: string) => {
     try {
-      const users = await readUsers();
+      await ensureUsersFile();
+      const data = await FileSystem.readAsStringAsync(USERS_FILE);
+      const users: User[] = JSON.parse(data);
       if (users.find(u => u.username === username)) {
         return false; // Username taken
       }

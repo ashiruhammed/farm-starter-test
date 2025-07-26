@@ -2,7 +2,8 @@ import '~/global.css';
 
 import { DarkTheme, DefaultTheme, Theme, ThemeProvider } from '@react-navigation/native';
 import { PortalHost } from '@rn-primitives/portal';
-import { Stack } from 'expo-router';
+import { useFonts } from 'expo-font';
+import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Appearance, Platform } from 'react-native';
@@ -12,6 +13,16 @@ import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { AuthProvider } from '../context/AuthContext';
 import { CartProvider } from '../context/CartContext';
+
+import {
+  BricolageGrotesque_200ExtraLight,
+  BricolageGrotesque_300Light,
+  BricolageGrotesque_400Regular,
+  BricolageGrotesque_500Medium,
+  BricolageGrotesque_600SemiBold,
+  BricolageGrotesque_700Bold,
+  BricolageGrotesque_800ExtraBold,
+} from '@expo-google-fonts/bricolage-grotesque';
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -37,7 +48,28 @@ export default function RootLayout() {
   usePlatformSpecificSetup();
   const { isDarkColorScheme } = useColorScheme();
 
+  const [loaded, error] = useFonts({
+    BricolageGrotesque_200ExtraLight,
+    BricolageGrotesque_300Light,
+    BricolageGrotesque_400Regular,
+    BricolageGrotesque_500Medium,
+    BricolageGrotesque_600SemiBold,
+    BricolageGrotesque_700Bold,
+    BricolageGrotesque_800ExtraBold,
+  });
+
+  React.useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+  if (!loaded && !error) {
+    return null;
+  }
+
   return (
+
     <AuthProvider>
       <CartProvider>
         <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
@@ -47,13 +79,13 @@ export default function RootLayout() {
               name='(auth)'
    
             />
-            <Stack.Screen
+            {/* <Stack.Screen
               name='(guarded)'
               options={{
                 title: 'Starter Base',
                 headerRight: () => <ThemeToggle />,
               }}
-            />
+            /> */}
           </Stack>
           <PortalHost />
         </ThemeProvider>
