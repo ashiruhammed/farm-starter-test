@@ -62,7 +62,7 @@ export default function HomeScreen() {
   return (
     <Container>
       <View className="mb-6 px-4">
-        <Text variant="bold" className="mb-2 text-2xl text-green-800">
+        <Text variant="bold" className="text-2xl text-green-800">
           Fresh from the Farm
         </Text>
         <Text className="text-sm text-gray-600">
