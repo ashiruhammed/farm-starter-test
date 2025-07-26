@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, View, ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
-// @ts-ignore: expo-location is available at runtime via Expo SDK
 import * as Location from 'expo-location';
+import { Leaf, MapPin, Package, ShoppingCart } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, FlatList, TouchableOpacity, View } from 'react-native';
+import productsData from '~/assets/data/products.json';
 import { Container } from '~/components/Container';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 import { Avatar, AvatarImage } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
 import { Text } from '~/components/ui/text';
 import { useCart } from '~/context/CartContext';
-import { ShoppingCart, MapPin, Package, Star } from 'lucide-react-native';
-import productsData from '~/assets/data/products.json';
 
 interface Product {
   id: number;
@@ -17,6 +15,8 @@ interface Product {
   price: number;
   image: string;
   stock: number;
+  unit: string;
+  category: string;
 }
 
 export default function HomeScreen() {
@@ -53,7 +53,7 @@ export default function HomeScreen() {
       <Container>
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" className="mb-4" />
-          <Text className="text-gray-500">Loading products...</Text>
+          <Text className="text-gray-500">Loading fresh farm products...</Text>
         </View>
       </Container>
     );
@@ -61,24 +61,28 @@ export default function HomeScreen() {
 
   return (
     <Container>
-      {/* Header Section */}
-      <View className="mb-6">
-        <Text className="mb-2 text-2xl font-bold text-gray-900">Discover Products</Text>
-        <Text className="text-sm text-gray-500">Find amazing products near you</Text>
+      <View className="mb-6 px-4">
+        <Text variant="bold" className="mb-2 text-2xl text-green-800">
+          Fresh from the Farm
+        </Text>
+        <Text className="text-sm text-gray-600">
+          Discover local, organic produce from nearby farmers
+        </Text>
       </View>
 
-      {/* Location Card */}
-      <View className="mb-6 rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 p-4">
+      <View className="mx-4 mb-6 rounded-2xl border border-green-100 bg-gradient-to-r from-green-50 to-emerald-50 p-4">
         <View className="flex-row items-center">
-          <View className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-blue-100">
-            <MapPin size={20} color="#3b82f6" />
+          <View className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-green-100">
+            <MapPin size={20} color="#16a34a" />
           </View>
           <View className="flex-1">
-            <Text className="mb-1 text-sm font-medium text-gray-700">Your Location</Text>
+            <Text variant="medium" className="mb-1 text-sm text-gray-700">
+              Farm Location
+            </Text>
             {locLoading ? (
               <View className="flex-row items-center">
-                <ActivityIndicator size="small" color="#3b82f6" />
-                <Text className="ml-2 text-xs text-gray-500">Getting location...</Text>
+                <ActivityIndicator size="small" color="#16a34a" />
+                <Text className="ml-2 text-xs text-gray-500">Finding nearby farms...</Text>
               </View>
             ) : location ? (
               <Text className="text-xs text-gray-600">
@@ -91,72 +95,85 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* Products Grid */}
       <FlatList
         data={products}
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
-        columnWrapperStyle={{ gap: 12 }}
+        columnWrapperStyle={{ gap: 12, paddingHorizontal: 16 }}
         contentContainerStyle={{ gap: 12, paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center py-20">
             <Package size={48} color="#d1d5db" className="mb-4" />
-            <Text className="mb-2 text-center text-gray-500">No products found</Text>
-            <Text className="text-center text-sm text-gray-400">
-              Check back later for new arrivals
-            </Text>
+            <Text className="mb-2 text-center text-gray-500">No farm products found</Text>
+            <Text className="text-center text-sm text-gray-400">Check back for fresh harvest</Text>
           </View>
         }
         renderItem={({ item }) => (
           <TouchableOpacity className="flex-1" activeOpacity={0.9}>
             <View className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
-              {/* Product Image */}
               <View className="relative">
                 <View className="h-40 w-full bg-gray-50">
                   <Avatar className="h-full w-full rounded-none" alt={item.name}>
-                    <AvatarImage source={{ uri: item.image }} style={{ resizeMode: 'cover' }} />
+                    <AvatarImage
+                      source={{ uri: item.image }}
+                      style={{ resizeMode: 'cover', width: '100%' }}
+                    />
                   </Avatar>
                 </View>
 
-                {/* Stock Badge */}
                 <View className="absolute right-3 top-3">
                   {item.stock === 0 ? (
                     <View className="rounded-full bg-red-500 px-2 py-1">
-                      <Text className="text-xs font-medium text-white">Out of Stock</Text>
+                      <Text variant="medium" className="text-xs text-white">
+                        Out of Stock
+                      </Text>
                     </View>
-                  ) : item.stock < 5 ? (
+                  ) : item.stock < 10 ? (
                     <View className="rounded-full bg-orange-500 px-2 py-1">
-                      <Text className="text-xs font-medium text-white">Low Stock</Text>
+                      <Text variant="medium" className="text-xs text-white">
+                        Low Stock
+                      </Text>
                     </View>
                   ) : (
                     <View className="rounded-full bg-green-500 px-2 py-1">
-                      <Text className="text-xs font-medium text-white">In Stock</Text>
+                      <Text variant="medium" className="text-xs text-white">
+                        Fresh
+                      </Text>
                     </View>
                   )}
                 </View>
 
-                {/* Rating Badge */}
-                <View className="absolute left-3 top-3 flex-row items-center rounded-full bg-white/90 px-2 py-1 backdrop-blur-sm">
-                  <Star size={12} color="#fbbf24" fill="#fbbf24" />
-                  <Text className="ml-1 text-xs font-medium text-gray-700">4.8</Text>
+                <View className="absolute left-3 top-3 rounded-full bg-white/90 px-2 py-1 backdrop-blur-sm">
+                  <View className="flex-row items-center">
+                    <Leaf size={12} color="#16a34a" />
+                    <Text variant="medium" className="ml-1 text-xs text-gray-700">
+                      Organic
+                    </Text>
+                  </View>
                 </View>
               </View>
 
-              {/* Product Info */}
               <View className="p-4">
                 <Text
-                  className="mb-2 line-clamp-2 text-sm font-semibold text-gray-900"
+                  variant="semiBold"
+                  className="mb-2 line-clamp-2 text-sm text-gray-900"
                   numberOfLines={2}>
                   {item.name}
                 </Text>
 
                 <View className="mb-3 flex-row items-center justify-between">
-                  <Text className="text-lg font-bold text-gray-900">${item.price.toFixed(2)}</Text>
-                  <Text className="text-xs text-gray-500">{item.stock} left</Text>
+                  <View>
+                    <Text variant="bold" className="text-lg text-green-700">
+                      ${item.price.toFixed(2)}
+                    </Text>
+                    <Text className="text-xs text-gray-500">per {item.unit}</Text>
+                  </View>
+                  <Text className="text-xs text-gray-500">
+                    {item.stock} {item.unit} left
+                  </Text>
                 </View>
 
-                {/* Add to Cart Button */}
                 <Button
                   onPress={async () => {
                     setAddingId(item.id);
@@ -168,17 +185,19 @@ export default function HomeScreen() {
                   className={`w-full rounded-xl py-3 ${
                     item.stock === 0
                       ? 'bg-gray-100'
-                      : 'bg-gradient-to-r from-blue-500 to-indigo-600'
+                      : 'bg-gradient-to-r from-green-500 to-emerald-600'
                   }`}>
                   {addingId === item.id ? (
                     <View className="flex-row items-center justify-center">
                       <ActivityIndicator size="small" color="#fff" />
-                      <Text className="ml-2 font-medium text-white">Adding...</Text>
+                      <Text variant="medium" className="ml-2 text-white">
+                        Adding...
+                      </Text>
                     </View>
                   ) : (
                     <View className="flex-row items-center justify-center">
                       <ShoppingCart size={16} color="#fff" />
-                      <Text className="ml-2 font-medium text-white">
+                      <Text variant="medium" className="ml-2 text-white">
                         {item.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
                       </Text>
                     </View>

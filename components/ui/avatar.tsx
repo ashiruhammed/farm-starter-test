@@ -22,9 +22,7 @@ function AvatarImage({
 }: AvatarPrimitive.ImageProps & {
   ref?: React.RefObject<AvatarPrimitive.ImageRef>;
 }) {
-  return (
-    <AvatarPrimitive.Image className={cn('aspect-square h-full w-full', className)} {...props} />
-  );
+  return <AvatarPrimitive.Image className={cn('h-full w-full', className)} {...props} />;
 }
 
 function AvatarFallback({
