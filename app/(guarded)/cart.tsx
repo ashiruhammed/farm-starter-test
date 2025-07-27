@@ -11,7 +11,7 @@ export default function CartScreen() {
   const { cart, removeFromCart, updateQuantity, total, clearCart } = useCart();
 
   const renderCartItem = ({ item }: { item: any }) => (
-    <View className="mx-4 mb-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
+    <View className="mb-4 rounded-2xl border border-gray-100 bg-white py-4 shadow-sm">
       <View className="flex-row items-center">
         <View className="mr-4 h-16 w-16 overflow-hidden rounded-xl bg-gray-100">
           <Image source={{ uri: item.image }} className="h-full w-full" />
@@ -86,7 +86,7 @@ export default function CartScreen() {
 
   return (
     <Container>
-      <View className="mb-6 px-4">
+      <View className="mb-6">
         <Text variant="bold" className="text-2xl text-gray-900">
           Shopping Cart
         </Text>
@@ -101,7 +101,7 @@ export default function CartScreen() {
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={
-          <View className="mx-4 mt-6 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+          <View className="mt-6 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
             <View className="mb-4 flex-row items-center justify-between">
               <Text variant="medium" className="text-lg text-gray-900">
                 Subtotal

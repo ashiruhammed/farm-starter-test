@@ -74,7 +74,7 @@ export default function SettingsScreen() {
     <Container>
       <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
         {/* Header */}
-        <View className="mb-6 px-4">
+        <View className="mb-6">
           <Text variant="bold" className="text-2xl text-gray-900">
             Profile & Settings
           </Text>
@@ -82,7 +82,7 @@ export default function SettingsScreen() {
         </View>
 
         {/* User Profile Card */}
-        <View className="mx-4 mb-6 rounded-2xl border border-green-100 bg-gradient-to-r from-green-50 to-emerald-50 p-6">
+        <View className="mb-6 rounded-2xl border border-green-100 bg-gradient-to-r from-green-50 to-emerald-50 p-6">
           <View className="flex-row items-center">
             <Avatar className="mr-4 h-16 w-16" alt={user?.username || 'User'}>
               <AvatarImage
@@ -110,7 +110,7 @@ export default function SettingsScreen() {
         </View>
 
         {/* Quick Stats */}
-        <View className="mx-4 mb-6">
+        <View className="mb-6">
           <Text variant="medium" className="mb-3 text-sm text-gray-700">
             Quick Stats
           </Text>
@@ -139,7 +139,7 @@ export default function SettingsScreen() {
         </View>
 
         {/* Menu Items */}
-        <View className="mx-4 mb-6">
+        <View className="mb-6">
           <Text variant="medium" className="mb-3 text-sm text-gray-700">
             Account & Settings
           </Text>
@@ -170,7 +170,7 @@ export default function SettingsScreen() {
         </View>
 
         {/* App Info */}
-        <View className="mx-4 mb-6">
+        <View className="mb-6">
           <Text variant="medium" className="mb-3 text-sm text-gray-700">
             App Information
           </Text>
@@ -191,7 +191,7 @@ export default function SettingsScreen() {
         </View>
 
         {/* Logout Button */}
-        <View className="mx-4 mb-8">
+        <View className="mb-8">
           <Button onPress={handleLogout} className="rounded-xl border border-red-200 bg-red-50">
             <View className="flex-row items-center justify-center">
               <LogOut size={20} color="#dc2626" />

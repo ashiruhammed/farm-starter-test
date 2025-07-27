@@ -22,10 +22,10 @@ const GuardedLayout = () => {
           paddingTop: 5,
           height: Platform.OS === 'android' ? 64 : 65 + useSafeAreaInsets().bottom,
         },
-        tabBarItemStyle: { marginTop: 10 },
+        tabBarItemStyle: { marginTop: 8 },
         tabBarLabelStyle: {
           fontSize: 12,
-          fontWeight: '500',
+          fontFamily: 'BricolageGrotesque_500Medium',
         },
       }}>
       <Tabs.Screen

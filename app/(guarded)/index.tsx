@@ -130,7 +130,7 @@ export default function HomeScreen() {
 
   return (
     <Container>
-      <View className="mb-6 px-4">
+      <View className="mb-6">
         <Text variant="bold" className="text-2xl text-green-800">
           Fresh from the Farm
         </Text>
@@ -139,7 +139,7 @@ export default function HomeScreen() {
         </Text>
       </View>
 
-      <View className="mx-4 mb-4">
+      <View className="mb-4">
         <View className="flex-row items-center rounded-2xl border border-gray-200 bg-white px-4 py-3">
           <Search size={20} color="#6b7280" />
           <TextInput
@@ -166,7 +166,7 @@ export default function HomeScreen() {
       </View>
 
       {showFilters && (
-        <View className="mx-4 mb-4">
+        <View className="mb-4">
           <Text variant="medium" className="mb-2 text-sm text-gray-700">
             Categories:
           </Text>
@@ -191,7 +191,7 @@ export default function HomeScreen() {
         </View>
       )}
 
-      <View className="mx-4 mb-6 rounded-2xl border border-green-100 bg-gradient-to-r from-green-50 to-emerald-50 p-4">
+      <View className="mb-6 rounded-2xl border border-green-100 bg-gradient-to-r from-green-50 to-emerald-50 p-4">
         <View className="flex-row items-center">
           <View className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-green-100">
             <MapPin size={20} color="#16a34a" />
@@ -220,7 +220,7 @@ export default function HomeScreen() {
         data={filteredProducts}
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
-        columnWrapperStyle={{ gap: 12, paddingHorizontal: 16 }}
+        columnWrapperStyle={{ gap: 12 }}
         contentContainerStyle={{ gap: 12, paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
