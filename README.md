@@ -236,7 +236,7 @@ Download the FarmStarter APK file for easy installation without cloning the proj
 
 ### 📥 Download APK
 
-**[Download FarmStarter APK](https://expo.dev/artifacts/eas/hJiB8jroeY4E2tayesB261.apk)**
+**[Download FarmStarter APK](https://expo.dev/artifacts/eas/kYwpLbDTWdLeZaV8uux8ij.apk)**
 
 ### Installation Instructions
 
