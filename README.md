@@ -75,25 +75,26 @@ A modern React Native mobile application that connects consumers with local farm
    yarn install
    ```
 
-3. **Start the development server**
+3. **Generate a prebuild**
 
    ```bash
-   npm run dev
-   # or
-   yarn dev
+   npx expo prebuild
    ```
 
 4. **Run on your preferred platform**
 
    ```bash
    # iOS
-   npm run ios
+   npx expo run:ios
 
    # Android
-   npm run android
+   npx expo run:android
+   ```
 
-   # Web
-   npm run web
+5. **Start development server**
+
+   ```bash
+   npx expo start
    ```
 
 ## 🧪 Testing the App
@@ -204,12 +205,8 @@ farmstarter/
 npm expo start              # Start development server
 
 # Platform specific
-npm run ios              # Run on iOS simulator
-npm run android          # Run on Android emulator
-npm run web              # Run on web browser
-
-# Utilities
-npm run clean            # Clean project files
+npx expo run:ios              # Run on iOS simulator
+npx expo run:android          # Run on Android emulator
 ```
 
 ## 🔮 Future Enhancements
@@ -239,7 +236,7 @@ Download the FarmStarter APK file for easy installation without cloning the proj
 
 ### 📥 Download APK
 
-**[Download FarmStarter APK](https://expo.dev/artifacts/eas/vjz8zMBZvEek3ZGxXQquZD.apk)**
+**[Download FarmStarter APK](https://expo.dev/artifacts/eas/hJiB8jroeY4E2tayesB261.apk)**
 
 ### Installation Instructions
 
@@ -250,7 +247,6 @@ Download the FarmStarter APK file for easy installation without cloning the proj
 ### System Requirements
 
 - Android 6.0 (API level 23) or higher
-- 50MB free storage space
 - Internet connection for product images
 
 ## 🤝 Contributing
@@ -264,10 +260,6 @@ We welcome contributions! Please feel free to submit issues and pull requests.
 - Maintain consistent code formatting
 - Write clear commit messages
 - Test on both iOS and Android
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
