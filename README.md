@@ -63,7 +63,7 @@ A modern React Native mobile application that connects consumers with local farm
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/farmstarter.git
+   git clone https://github.com/ashiruhammed/farm-starter-test.git
    cd farmstarter
    ```
 
