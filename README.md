@@ -202,7 +202,7 @@ farmstarter/
 
 ```bash
 # Development
-npm expo start              # Start development server
+npx expo start              # Start development server
 
 # Platform specific
 npx expo run:ios              # Run on iOS simulator
